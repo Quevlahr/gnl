@@ -13,7 +13,7 @@
 #ifndef GET_NEXT_LINE_H
 # define GET_NEXT_LINE_H
 
-# define BUFF_SIZE 10000
+# define BUFF_SIZE 5
 
 # include "libft.h"
 # include <string.h> // pour size_t
@@ -21,6 +21,7 @@
 # include <unistd.h> // pour read
 # include <stdio.h> // pour EOF
 
-int			get_next_line(int const fd, char **line);
+int					get_next_line(int const fd, char **line);
+int					ft_gnl(int const fd, char **line);
 
 #endif
