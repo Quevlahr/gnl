@@ -12,12 +12,34 @@
 
 #include "get_next_line.h"
 
-int			get_next_line(int const fd, char **line)
+static int		ft_otherln(char *str)
+{
+	int			nb_ln;
+	int			i;
+
+	i = 0;
+	nb_ln = 0;
+	while (str[i])
+	{
+		if (str[i] == '\n' || str[i] == EOF)
+			return (i);
+		i++;
+	}
+	return (nb_ln);
+}
+
+/*
+** Chiant car ne fonctionne pas avec les gros buffer.
+** Si le buffer est plus grand que la ligne d'apres.
+*/
+
+int				get_next_line(int const fd, char **line)
 {
 	char			*buf;
 	t_list			*begin;
 	int				i;
 	int				j;
+	int				other;
 	static char		*test = NULL;
 
 	buf = (char*)malloc(sizeof(char) * BUFF_SIZE);
@@ -39,33 +61,29 @@ int			get_next_line(int const fd, char **line)
 			ft_bzero(buf, BUFF_SIZE);
 	}
 
-	// ft_lstprint(begin);
-	// if (test != NULL)
-	// {
-	// 	*line = (char*)malloc(sizeof(char) * ft_strlen(test) + (BUFF_SIZE * ft_lstsize(begin)));
-	// 	*line = test;
-	// }
-	// else
-	// {	
-	// ft_putnbrdl(ft_strlen(test) + 
-	// 		(BUFF_SIZE * (ft_lstsize(begin) - 1) + ft_abs(i + 1)));
+	if (test != NULL && (other = ft_otherln(test)) > 0)
+	{
+		*line = (char*)malloc(sizeof(char) * other);
+		ft_strncat(*line, test, other);
+	}
+	else
+	{
 		*line = (char*)malloc(sizeof(char) * ft_strlen(test) + 
 			(BUFF_SIZE * ft_lstsize(begin)));
 		ft_strncat(*line, test, ft_strlen(test));
 		ft_lsttochar(begin, *line);
 		(*line)[ft_strlen(test) + (BUFF_SIZE * (ft_lstsize(begin) - 1) + ft_abs(i + 1))] = '\0';
-	// }
-		// ft_putendl("DEBUT : ");
-		// ft_putstr(buf);
-		// ft_putendl("FIN !!!!");
-	free(test);
-	i = ft_abs(i);
-	test = (char*)malloc(sizeof(char) * (BUFF_SIZE - i));
-	while (i < BUFF_SIZE)
-	{
-		test[j++] = buf[i++];
+
+
+		free(test);
+		i = ft_abs(i);
+		test = (char*)malloc(sizeof(char) * (BUFF_SIZE - i));
+		while (i < BUFF_SIZE)
+		{
+			test[j++] = buf[i++];
+		}
+		test[j] = '\0';
 	}
-	test[j] = '\0';
 
 
 	free(begin);

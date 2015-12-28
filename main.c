@@ -31,16 +31,16 @@ int			main(int ac, char **av)
 	ft_putstr(line);
 	get_next_line(fd, &line);
 	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
 	free(line);
 	return (0);
 }
