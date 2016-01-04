@@ -25,30 +25,36 @@ int			main(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	line = NULL;
 	if (ac == 2 && fd != -1)
-		get_next_line(fd, &line);
-	else
-		ft_putendl("error");
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
+	{
+		// get_next_line(fd, &line);
+		while (get_next_line(fd, &line) > 0)
+		{
+			// ft_putstr(line);
+		}
+	}
+	// else
+	// 	ft_putendl("error");
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// ft_putstr(line);
 	close(fd);
 	free(line);
 	return (0);
