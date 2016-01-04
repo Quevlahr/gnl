@@ -14,7 +14,7 @@
 # include <fcntl.h> // pour open
 
 /*
-** go='gccw -I libft/includes -c ft_gnl.c main.c; gcc -o gnt ft_gnl.o main.o -L libft -lft;'
+** go='gccw -I libft/includes -c get_next_line.c main.c; gcc -o gnt get_next_line.o main.o -L libft -lft;'
 */
 
 int			main(int ac, char **av)
@@ -25,26 +25,30 @@ int			main(int ac, char **av)
 	fd = open(av[1], O_RDONLY);
 	line = NULL;
 	if (ac == 2 && fd != -1)
-		ft_gnl(fd, &line);
+		get_next_line(fd, &line);
 	else
 		ft_putendl("error");
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
-	// get_next_line(fd, &line);
-	// ft_putstr(line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
 	close(fd);
 	free(line);
 	return (0);

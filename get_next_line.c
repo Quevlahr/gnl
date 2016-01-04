@@ -12,81 +12,63 @@
 
 #include "get_next_line.h"
 
-static int		ft_otherln(char *str)
+// static void		ft_freestr(char *str)
+// {
+// 	if (*str == '\0')
+// 	{
+// 		ft_putendl("ZEXTRCYTVUBI");
+// 		str--;
+// 		while (*str)
+// 			str--;
+// 		free(str);
+// 		str = NULL;
+// 	}
+// }
+
+static char		*ft_strinit(int fd, char *str)
 {
-	int			nb_ln;
+	char		*buf;
 	int			i;
+	t_list		*begin;
 
+	buf = (char*)malloc(sizeof(char) * BUFF_SIZE);
 	i = 0;
-	nb_ln = 0;
-	while (str[i])
+	begin = NULL;
+	while (read(fd, buf, BUFF_SIZE) > 0)
 	{
-		if (str[i] == '\n' || str[i] == EOF)
-			return (i);
-		i++;
+		ft_lstpush(&begin, buf, BUFF_SIZE);
+		ft_bzero(buf, BUFF_SIZE);
 	}
-	return (nb_ln);
+	str = (char*)malloc(sizeof(char) * BUFF_SIZE * ft_lstsize(begin) + 1);
+	str[0] = '\0';
+	str++;
+	ft_lsttochar(begin, str);
+	free(begin);
+	free(buf);
+	return (str);
 }
-
-/*
-** Chiant car ne fonctionne pas avec les gros buffer.
-** Si le buffer est plus grand que la ligne d'apres.
-*/
 
 int				get_next_line(int const fd, char **line)
 {
-	char			*buf;
-	t_list			*begin;
+	static char		*str = NULL;
 	int				i;
-	int				j;
-	int				other;
-	static char		*test = NULL;
 
-	buf = (char*)malloc(sizeof(char) * BUFF_SIZE);
-	begin = NULL;
-	i = 1;
-	j = 0;
-	while (i > 0 && read(fd, buf, BUFF_SIZE) > 0)
+	i = 0;
+	if (str == NULL)
+		str = ft_strinit(fd, str);
+	while (str[i] != '\0' && str[i] != '\n')
+		i++;
+	*line = (char*)malloc(sizeof(char) * i);
+	i = 0;
+	while (*str != '\0' && *str != '\n')
 	{
-		i = 1;
-		while (i > 0 && i <= BUFF_SIZE)
-		{
-			if (buf[i - 1] == '\n' || buf[i - 1] == EOF)
-				i *= -1;
-			else
-				i++;
-		}
-		ft_lstpush(&begin, buf, BUFF_SIZE);
-		if (i > 0)
-			ft_bzero(buf, BUFF_SIZE);
+		(*line)[i] = *str;
+		str++;
+		i++;
 	}
-
-	if (test != NULL && (other = ft_otherln(test)) > 0)
-	{
-		*line = (char*)malloc(sizeof(char) * other);
-		ft_strncat(*line, test, other);
-	}
-	else
-	{
-		*line = (char*)malloc(sizeof(char) * ft_strlen(test) + 
-			(BUFF_SIZE * ft_lstsize(begin)));
-		ft_strncat(*line, test, ft_strlen(test));
-		ft_lsttochar(begin, *line);
-		(*line)[ft_strlen(test) + (BUFF_SIZE * (ft_lstsize(begin) - 1) + ft_abs(i + 1))] = '\0';
-
-
-		free(test);
-		i = ft_abs(i);
-		test = (char*)malloc(sizeof(char) * (BUFF_SIZE - i));
-		while (i < BUFF_SIZE)
-		{
-			test[j++] = buf[i++];
-		}
-		test[j] = '\0';
-	}
-
-
-	free(begin);
-	free(buf);
+	(*line)[i] = '\0';
+	if (*str != '\0')
+		str++;
+	// ft_freestr(str);
 	return (1);
 }
