@@ -15,10 +15,10 @@
 static void		ft_freestr(char **str, int *j)
 {
 	*j = 0;
-	// (*str)--;
-	// while (**str)
-	// 	(*str)--;
-	// free(*str);
+	(*str)--;
+	while (**str)
+		(*str)--;
+	free(*str);
 	*str = NULL;
 }
 
@@ -37,6 +37,20 @@ int				ft_lstcontentsize(t_list *begin)
 	return (i);
 }
 
+void			ft_lstclear(t_list **begin)
+{
+	t_list		tmp;
+
+	&tmp = *begin;
+	while (*begin)
+	{
+		tmp = ((*begin)->next);
+		free((*begin)->content);
+		free(*begin);
+		*begin = &tmp;
+	}
+}
+
 static int		ft_strinit(int fd, char **str)
 {
 	char		*buf;
@@ -44,7 +58,7 @@ static int		ft_strinit(int fd, char **str)
 	t_list		*begin;
 	int			last;
 
-	buf = (char*)malloc(sizeof(char) * BUFF_SIZE);
+	buf = ft_strnew(BUFF_SIZE);
 	begin = NULL;
 	last = 0;
 	while ((i = read(fd, buf, BUFF_SIZE)) > 0)
@@ -54,13 +68,12 @@ static int		ft_strinit(int fd, char **str)
 		ft_bzero(buf, i);
 	}
 	i = (i == -1) ? -1 : last;
-	(*str) = (char*)malloc(sizeof(char) * ft_lstcontentsize(begin) + 3);
+	(*str) = ft_strnew(ft_lstcontentsize(begin) + 2);
 	(*str)[0] = '\0';
 	(*str)++;
 	ft_lsttochar(begin, (*str));
 	(*str)[ft_lstcontentsize(begin) + 1] = '\0';
-	(*str)[ft_lstcontentsize(begin) + 2] = '0';
-	free(begin);
+	ft_lstclear(&begin);
 	free(buf);
 	return (i);
 }
@@ -72,13 +85,12 @@ int				get_next_line(int const fd, char **line)
 	int				i;
 
 	i = 0;
-	*line = NULL;
 	if (str == NULL)
 		if ((j = ft_strinit(fd, &str)) < 0)
 			return (-1);
 	while (str[i] != '\0' && str[i] != '\n')
 		i++;
-	*line = (char*)malloc(sizeof(char) * i);
+	*line = ft_strnew(i);
 	i = 0;
 	while (*str != '\0' && *str != '\n')
 	{
@@ -94,5 +106,7 @@ int				get_next_line(int const fd, char **line)
 		ft_freestr(&str, &j);
 		return (0);
 	}
+	if (*str == '\0' && j == 0)
+		return (0);
 	return (1);
 }
