@@ -12,27 +12,16 @@
 
 #include "get_next_line.h"
 
-static void		ft_freestr(char **str)
-{
-	(*str)--;
-	while (**str)
-		(*str)--;
-	ft_strdel(str);
-}
-
 static int		ft_strinit(int fd, char **str)
 {
 	char		*buf;
 	int			i;
 	t_list		*begin;
-	int			last;
 
 	buf = ft_strnew(BUFF_SIZE);
 	begin = NULL;
-	last = 0;
 	while ((i = read(fd, buf, BUFF_SIZE)) > 0)
 	{
-		last = i;
 		ft_lstpush(&begin, buf, i);
 		ft_bzero(buf, i);
 	}
@@ -45,7 +34,7 @@ static int		ft_strinit(int fd, char **str)
 	(*str)[ft_lstcontentsize(begin) + 1] = '\0';
 	ft_lstclear(&begin);
 	ft_strdel(&buf);
-	return (last);
+	return (i);
 }
 
 static int		ft_finish(char **str)
@@ -55,13 +44,19 @@ static int		ft_finish(char **str)
 		(*str)++;
 		if (**str == '\0')
 		{
-			ft_freestr(str);
+			(*str)--;
+			while (**str)
+				(*str)--;
+			ft_strdel(str);
 			return (1);
 		}
 	}
 	else if (**str == '\0')
 	{
-		ft_freestr(str);
+		(*str)--;
+		while (**str)
+			(*str)--;
+		ft_strdel(str);
 		return (0);
 	}
 	return (1);
