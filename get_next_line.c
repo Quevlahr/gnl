@@ -12,43 +12,12 @@
 
 #include "get_next_line.h"
 
-static void		ft_freestr(char **str, int *j)
+static void		ft_freestr(char **str)
 {
-	*j = 0;
 	(*str)--;
 	while (**str)
 		(*str)--;
-	free(*str);
-	*str = NULL;
-}
-
-int				ft_lstcontentsize(t_list *begin)
-{
-	t_list		*list;
-	int			i;
-
-	list = begin;
-	i = 0;
-	while (list)
-	{
-		i += ft_strlen(list->content);
-		list = list->next;
-	}
-	return (i);
-}
-
-void			ft_lstclear(t_list **begin)
-{
-	t_list		tmp;
-
-	&tmp = *begin;
-	while (*begin)
-	{
-		tmp = ((*begin)->next);
-		free((*begin)->content);
-		free(*begin);
-		*begin = &tmp;
-	}
+	ft_strdel(str);
 }
 
 static int		ft_strinit(int fd, char **str)
@@ -67,26 +36,47 @@ static int		ft_strinit(int fd, char **str)
 		ft_lstpush(&begin, buf, i);
 		ft_bzero(buf, i);
 	}
-	i = (i == -1) ? -1 : last;
+	if (i == -1)
+		return (-1);
 	(*str) = ft_strnew(ft_lstcontentsize(begin) + 2);
 	(*str)[0] = '\0';
 	(*str)++;
 	ft_lsttochar(begin, (*str));
 	(*str)[ft_lstcontentsize(begin) + 1] = '\0';
 	ft_lstclear(&begin);
-	free(buf);
-	return (i);
+	ft_strdel(&buf);
+	return (last);
+}
+
+static int		ft_finish(char **str)
+{
+	if (**str == '\n')
+	{
+		(*str)++;
+		if (**str == '\0')
+		{
+			ft_freestr(str);
+			return (1);
+		}
+	}
+	else if (**str == '\0')
+	{
+		ft_freestr(str);
+		return (0);
+	}
+	return (1);
 }
 
 int				get_next_line(int const fd, char **line)
 {
 	static char		*str = NULL;
-	static int		j = 0;
 	int				i;
 
 	i = 0;
+	if (line == NULL)
+		return (-1);
 	if (str == NULL)
-		if ((j = ft_strinit(fd, &str)) < 0)
+		if (ft_strinit(fd, &str) < 0)
 			return (-1);
 	while (str[i] != '\0' && str[i] != '\n')
 		i++;
@@ -99,14 +89,5 @@ int				get_next_line(int const fd, char **line)
 		i++;
 	}
 	(*line)[i] = '\0';
-	if (*str != '\0')
-		str++;
-	if (*str == '\0' && j != 0 && ft_strcmp(*line, str) == 0)
-	{
-		ft_freestr(&str, &j);
-		return (0);
-	}
-	if (*str == '\0' && j == 0)
-		return (0);
-	return (1);
+	return (ft_finish(&str));
 }
