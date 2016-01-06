@@ -16,10 +16,10 @@
 # define BUFF_SIZE 32
 
 # include "libft.h"
-# include <string.h> // pour size_t
-# include <stdlib.h> // pour malloc
-# include <unistd.h> // pour read
-# include <stdio.h> // pour EOF
+# include <string.h>
+# include <stdlib.h>
+# include <unistd.h>
+# include <stdio.h>
 
 int					get_next_line(int const fd, char **line);
 int					ft_gnl(int const fd, char **line);
