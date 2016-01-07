@@ -87,9 +87,9 @@ int				get_next_line(int const fd, char **line)
 		return (-1);
 	while (tmp != NULL && tmp->content_size != (size_t)fd)
 		tmp = tmp->next;
-
-	if (ft_strinit(fd, &str) < 0)
-		return (-1);
+	if (tmp == NULL)
+		if (ft_strinit(fd, &str) < 0)
+			return (-1);
 
 
 	tmp = str;
