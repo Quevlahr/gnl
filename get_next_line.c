@@ -41,6 +41,40 @@ static int			ft_read(t_list **str, int fd, t_list *tmp, int i)
 	return (i);
 }
 
+static int			ft_line(t_list **str, int fd, t_list *tp, char **line)
+{
+	int				i;
+
+	i = 0;
+	tp = *str;
+	while (tp->content_size != (size_t)fd)
+		tp = tp->next;
+	if (*((char*)tp->content) == '\0')
+	{
+		// while (*((char*)tp->content) != '\2')
+		// 	tp->content--;
+		// free(tp->content);
+		// tp->content = NULL;
+		return (0);
+	}
+	if (*((char*)tp->content) == '\2')
+		tp->content++;
+	while (((char*)tp->content)[i] != '\0' && ((char*)tp->content)[i] != '\n')
+		i++;
+	*line = ft_strnew(i);
+	i = 0;
+	while (*((char*)tp->content) != '\0' && *((char*)tp->content) != '\n')
+	{
+		(*line)[i] = *((char*)tp->content);
+		tp->content++;
+		i++;
+	}
+	(*line)[i] = '\0';
+	if (*((char*)tp->content) == '\n')
+		tp->content++;
+	return (1);
+}
+
 int					get_next_line(int const fd, char **line)
 {
 	static t_list	*str = NULL;
@@ -54,6 +88,5 @@ int					get_next_line(int const fd, char **line)
 	if (tmp == NULL)
 		if (ft_read(&str, fd, tmp, 0) < 0)
 			return (-1);
-	ft_read();
-	return (0);
+	return (ft_line(&str, fd, tmp, line));
 }
