@@ -31,59 +31,35 @@ static int			ft_read(t_list **str, int fd, t_list *tmp, int i)
 	buf++;
 	ft_lsttochar(list, buf);
 	buf--;
-	if (ft_strlen(buf) > 2)
-	{
-		ft_lstpush(str, buf, ft_lstcontentsize(list) + 2);
-		tmp = *str;
-		while (tmp->next)
-			tmp = tmp->next;
-		tmp->content_size = fd;
-	}
+	ft_lstpush(str, buf, ft_lstcontentsize(list) + 2);
+	tmp = *str;
+	while (tmp->next)
+		tmp = tmp->next;
+	tmp->content_size = fd;
 	ft_lstclear(&list);
 	ft_strdel(&buf);
 	return (i);
 }
 
-void		ft_lstclr(t_list **begin_list)
+static int			ft_finish(t_list **str, t_list *tmp)
 {
-	t_list	*free_list;
-	t_list	*tmp;
-
-	if (begin_list != NULL)
+	tmp = *str;
+	while (tmp && ((char*)tmp->content)[0] == '\0')
+		tmp = tmp->next;
+	if (tmp == NULL)
 	{
-		free_list = *begin_list;
-		while (free_list)
+		tmp = *str;
+		while (tmp)
 		{
-			tmp = free_list;
-			free_list = free_list->next;
-			free(tmp->content);
-			free(tmp);
+			while (((char *)tmp->content)[0] != '\2')
+				tmp->content--;
+			tmp = tmp->next;
 		}
-		*begin_list = NULL;
+		*str = NULL;
+		return (1);
 	}
+	return (0);
 }
-
-// static int			ft_finish(t_list **str, t_list *tmp)
-// {
-// 	tmp = *str;
-// 	while (tmp && ((char*)tmp->content)[0] == '\0')
-// 		tmp = tmp->next;
-// 	if (tmp == NULL)
-// 	{
-// 		tmp = *str;
-// 		while (tmp)
-// 		{
-// 			// (*tmp)->content--;
-// 			while (((char *)tmp->content)[0] != '\2')
-// 				tmp->content--;
-// 			tmp = tmp->next;
-// 		}
-// 		ft_lstclr(str);
-// 		// *str = NULL;
-// 		return (1);
-// 	}
-// 	return (0);
-// }
 
 static int			ft_line(t_list **str, int fd, t_list *tp, char **line)
 {
@@ -93,18 +69,6 @@ static int			ft_line(t_list **str, int fd, t_list *tp, char **line)
 	tp = *str;
 	while (tp->content_size != (size_t)fd)
 		tp = tp->next;
-	// if (ft_finish(str, NULL) == 1)
-	// 	return (0);
-	// if (*((char*)tp->content) == '\0')
-	// {
-	// 	// while (*((char*)tp->content) != '\2')
-	// 	// 	tp->content--;
-	// 	// free(tp->content);
-	// 	tp->content = NULL;
-	// 	// ft_strdel(tp->content);
-	// 	// free(tp->content);
-	// 	return (0);
-	// }
 	if (*((char*)tp->content) == '\2')
 		tp->content++;
 	while (((char*)tp->content)[i] != '\0' && ((char*)tp->content)[i] != '\n')
@@ -121,19 +85,14 @@ static int			ft_line(t_list **str, int fd, t_list *tp, char **line)
 	if (*((char*)tp->content) == '\n')
 	{
 		tp->content++;
-		// if (*((char*)tp->content) == '\0')
-		// {
-		// 	// ft_strdel(tp->content);
-		// 	tp->content = NULL;
-		// 	return (1);
-		// }
+		if (*((char*)tp->content) == '\0')
+			ft_finish(str, NULL);
 	}
-	// else if (*((char*)tp->content) == '\0')
-	// {
-	// 	// ft_strdel(tp->content);
-	// 	tp->content = NULL;
-	// 	return (0);
-	// }
+	else if (*((char*)tp->content) == '\0')
+	{
+		ft_finish(str, NULL);
+		return (0);
+	}
 	return (1);
 }
 
@@ -147,7 +106,7 @@ int					get_next_line(int const fd, char **line)
 		return (-1);
 	while (tmp && tmp->content_size != (size_t)fd)
 		tmp = tmp->next;
-	// if (tmp == NULL)
+	if (tmp == NULL)
 		if (ft_read(&str, fd, tmp, 0) < 0)
 			return (-1);
 	return (ft_line(&str, fd, tmp, line));
