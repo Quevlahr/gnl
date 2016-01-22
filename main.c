@@ -67,7 +67,8 @@ int			main(int ac, char **av)
 	ac = 3;
 
 	fd1 = open(av[1], O_RDONLY);
-	get_next_line(fd1, &line);
+	fd1 = 0;
+	ft_putnbrdl(get_next_line(fd1, &line));
 	// ft_putendl(line1);
 
 	// fd2 = open(av[2], O_RDONLY);
