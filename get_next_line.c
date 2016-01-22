@@ -73,10 +73,7 @@ static int 			ft_helper(t_list **str, t_list *tmp, int fd)
 			ft_finish(str, NULL);
 	}
 	else if (*((char*)tmp->content) == '\0')
-	{
 		ft_finish(str, NULL);
-		return (0);
-	}
 	return (1);
 }
 
@@ -93,6 +90,8 @@ static int			ft_line(t_list **str, int fd, t_list *tp, char **line)
 	while (((char*)tp->content)[i] != '\0' && ((char*)tp->content)[i] != '\n')
 		i++;
 	*line = ft_strnew(i);
+	if (i == 0)
+		return (0);
 	i = 0;
 	while (*((char*)tp->content) != '\0' && *((char*)tp->content) != '\n')
 	{
