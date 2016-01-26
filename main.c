@@ -53,6 +53,7 @@ int			main(int ac, char **av)
 			ft_putstr(line);
 			ft_putnbrdl(res);
 		}
+		ft_putnbrdl(res);
 	}
 	close(fd);
 	free(line);
