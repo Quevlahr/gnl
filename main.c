@@ -38,79 +38,78 @@
 // 	return (0);
 // }
 
-int			main(int ac, char **av)
-{
-	int				fd;
-	char			*line;
-	int				res = 0;
-
-	fd = open(av[1], O_RDONLY);
-	line = NULL;
-	if (ac == 2 && fd != -1)
-	{
-		while ((res = get_next_line(fd, &line)) > 0)
-		{
-			ft_putstr(line);
-			ft_putnbrdl(res);
-		}
-		ft_putnbrdl(res);
-	}
-	close(fd);
-	free(line);
-	return (0);
-}
-
 // int			main(int ac, char **av)
 // {
-// 	int				fd1;
-// 	// int				fd2;
-// 	char			*line = NULL;
-// 	// char			*line2 = NULL;
+// 	int				fd;
+// 	char			*line;
+// 	int				res = 0;
 
-// 	ac = 3;
+// 	fd = open(av[1], O_RDONLY);
+// 	line = NULL;
+// 	if (ac == 2 && fd != -1)
+// 	{
+// 		while ((res = get_next_line(fd, &line)) > 0)
+// 		{
+// 			ft_putstr(line);
+// 			ft_putnbrdl(res);
+// 		}
+// 		ft_putnbrdl(res);
+// 	}
+// 	close(fd);
+// 	free(line);
+// 	return (0);
+// }
 
-// 	fd1 = open(av[1], O_RDONLY);
-// 	fd1 = 0;
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	// ft_putendl(line1);
+int			main(int ac, char **av)
+{
+	int				fd1;
+	char			*line1 = NULL;
+	int				fd2;
+	char			*line2 = NULL;
 
-// 	// fd2 = open(av[2], O_RDONLY);
-// 	// get_next_line(fd2, &line1);
-// 	// ft_putendl(line1);
+	ac = 3;
 
-// 	// get_next_line(fd1, &line1);
-// 	// ft_putendl(line1);
+	fd1 = open(av[1], O_RDONLY);
+	get_next_line(fd1, &line1);
+	ft_putendl(line1);
 
-// 	// close(fd1);
-// 	// free(line1);
-// 	// close(fd2);
-// 	// free(line2);
+	fd2 = open(av[2], O_RDONLY);
+	get_next_line(fd2, &line2);
+	ft_putendl(line2);
+
+	get_next_line(fd1, &line1);
+	ft_putendl(line1);
+
+	close(fd1);
+	free(line1);
+	close(fd2);
+	free(line2);
 
 
 	
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	ft_putnbrdl(get_next_line(fd1, &line));
-// 	ft_putstr(line);
-// 	get_next_line(fd1, &line);
-// 	ft_putstr(line);
-// 	get_next_line(fd1, &line);
-// 	ft_putstr(line);
-// 	// get_next_line(fd, &line);
-// 	// // ft_putstr(line);
-// 	return (0);
-// }
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// ft_putnbrdl(get_next_line(fd1, &line));
+	// ft_putstr(line);
+	// get_next_line(fd1, &line);
+	// ft_putstr(line);
+	// get_next_line(fd1, &line);
+	// ft_putstr(line);
+	// get_next_line(fd, &line);
+	// // ft_putstr(line);
+	return (0);
+}
 
 
 	// fd = 1;

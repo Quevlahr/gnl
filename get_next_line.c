@@ -40,19 +40,43 @@ static int			ft_read(t_list **gnl, t_list *tmp, int fd, int res)
 	return (1);
 }
 
-static int			ft_line(t_list *tmp, char **line, int fd)
+static int			ft_finish(t_list **gnl, t_list *tmp)
+{
+	tmp = *gnl;
+	while (tmp && ((char*)tmp->content)[0] == '\0')
+		tmp = tmp->next;
+	if (tmp == NULL)
+	{
+		tmp = *gnl;
+		while (tmp)
+		{
+			while (((char *)tmp->content)[0] != '\2')
+				tmp->content--;
+			tmp = tmp->next;
+		}
+		*gnl = NULL;
+		return (1);
+	}
+	return (0);
+}
+
+static int			ft_line(t_list **gnl, t_list *tmp, char **line, int fd)
 {
 	int				i;
 
 	i = 0;
+	tmp = *gnl; //useless
 	while (tmp->content_size != (size_t)fd)
 		tmp = tmp->next;
 	if (((char*)tmp->content)[i] == '\0')
 	{
-		// tmp->content = NULL;
+		// while (((char *)tmp->content)[0] != '\2')
+		// 	tmp->content--;
+		// *gnl = NULL;
+		ft_finish(gnl, NULL);
 		return (0);
 	}
-	while (((char*)tmp->content)[i] != '\0')
+	while (((char*)tmp->content)[i] != '\0' && ((char*)tmp->content)[i] != '\n')
 		i++;
 	*line = ft_strnew(i);
 	i = 0;
@@ -76,9 +100,10 @@ int					get_next_line(int const fd, char **line)
 	tmp = gnl;
 	if (line == NULL)
 		return (-1);
+	// *line = NULL;
 	if (gnl == NULL)
 		if (ft_read(&gnl, tmp, fd, 0) < 0)
 			return (-1);
 	tmp = gnl;
-	return (ft_line(tmp, line, fd));
+	return (ft_line(&gnl, tmp, line, fd));
 }
