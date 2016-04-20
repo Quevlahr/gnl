@@ -28,10 +28,12 @@ int				main(int ac, char **av)
 		{
 			ft_putendl(line);
 			ft_putnbrdl(res);
+			ft_strdel(&line);
+			line = NULL;
 		}
 		ft_putnbrdl(res);
 	}
 	close(fd);
-	free(line);
+	ft_strdel(&line);
 	return (0);
 }
