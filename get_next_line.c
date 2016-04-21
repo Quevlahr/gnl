@@ -17,6 +17,7 @@ static int			ft_read(int const fd, char **str, char **line, int res)
 	char			*buf;
 	int				i;
 	char			*tmp;
+	char			*tmp2;
 
 	buf = ft_strnew(BUFF_SIZE);
 	while ((res = read(fd, buf, BUFF_SIZE)) > 0)
@@ -31,8 +32,10 @@ static int			ft_read(int const fd, char **str, char **line, int res)
 			else
 			{
 				tmp = *line;
-				*line = ft_strjoin(tmp, ft_strsub(buf, 0, i));
+				tmp2 = ft_strsub(buf, 0, i);
+				*line = ft_strjoin(tmp, tmp2);
 				ft_strdel(&tmp);
+				ft_strdel(&tmp2);
 			}
 			ft_strdel(str);
 			*str = ft_strsub(buf, ++i, ft_strlen(buf));

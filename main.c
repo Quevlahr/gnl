@@ -17,11 +17,11 @@ int				main(int ac, char **av)
 {
 	char			*line;
 	int				fd;
-	int				res = 0;
+	int				res;
 
 	fd = open(av[1], O_RDONLY);
-	// fd = 42;
 	line = NULL;
+	res = 0;
 	if (ac == 2)
 	{
 		while ((res = get_next_line(fd, &line)) > 0)
