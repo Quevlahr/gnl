@@ -24,7 +24,6 @@ int				main(int ac, char **av)
 	line = NULL;
 	if (ac == 2)
 	{
-		// res = get_next_line(fd, &line);
 		while ((res = get_next_line(fd, &line)) > 0)
 		{
 			ft_putendl(line);
