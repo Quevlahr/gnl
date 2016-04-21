@@ -20,8 +20,9 @@ int				main(int ac, char **av)
 	int				res = 0;
 
 	fd = open(av[1], O_RDONLY);
+	// fd = 42;
 	line = NULL;
-	if (ac == 2 && fd != -1)
+	if (ac == 2)
 	{
 		// res = get_next_line(fd, &line);
 		while ((res = get_next_line(fd, &line)) > 0)
